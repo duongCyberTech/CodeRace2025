@@ -50,6 +50,14 @@ for index, row in df.iterrows():
             "Comment": row['Comment'] if 'Comment' in row else 'No comment',
             "Error Type": "Send Error"
         })
+    elif 'ERROR' in str(row['Signal']) or 'ERR' in str(row['Signal']):
+        error_signals.append({
+            "Message": row['Message'],
+            "ID": row['ID'],   
+            "Signal": row['Signal'],
+            "Comment": row['Comment'] if 'Comment' in row else 'No comment',
+            "Error Type": "Undefined Error"
+        })
 
 if error_signals:
     print("Các signals có lỗi:")
