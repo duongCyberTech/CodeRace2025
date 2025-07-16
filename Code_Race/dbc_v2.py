@@ -1,7 +1,17 @@
 import cantools
 import pandas as pd
 import csv
+import googletrans as gt
+import asyncio
 
+def safe_translate(text):
+    try:
+        return asyncio.run(translator.translate(text, src='ja', dest='en')).text
+    except Exception as e:
+        print(f"[Translation failed]: {text} -> {e}")
+        return text
+
+translator = gt.Translator()
 dbc_file = './raw_data/BOSCH_CAN Data.dbc'
 db = cantools.database.load_file(dbc_file, encoding='shift_jis')
 rows = []
@@ -15,8 +25,7 @@ for msg in db.messages:
         print(f"-- {sig}")
         with open(txt_file, 'a', encoding='utf-8-sig') as f:
             f.write(f"-- {sig}\n")
-        # Gộp các enum thành 1 chuỗi
-        enum_table = "; ".join(f"{k}: {v}" for k, v in (sig.choices or {}).items())
+        enum_table = "; ".join(f"{k}: {safe_translate(v)}" for k, v in (sig.choices or {}).items())
         rows.append({
             "Message": msg.name,
             "ID": hex(msg.frame_id),
@@ -37,8 +46,5 @@ for msg in db.messages:
             "Comment": sig.comment
         })
 
-# Xuất ra file
 df = pd.DataFrame(rows)
 df.to_csv("./p_data/signals_summary_v2.csv", index=False, encoding="utf-8-sig", quoting=csv.QUOTE_NONNUMERIC)  # Để Excel mở không lỗi font
-# Hoặc để an toàn hơn:
-# df.to_excel("signals_summary.xlsx", index=False)
