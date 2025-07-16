@@ -6,14 +6,6 @@ efile = './p_data/error_signals_summary.csv'
 dfp = pd.read_csv(pfile, encoding="utf-8-sig")
 dfe = pd.read_csv(efile, encoding="utf-8-sig")
 
-CAN_Frame = {
-    'arbitration_id': 0x1a6,
-    'is_extended_id': False,
-    'is_remote_frame': False,
-    'dlc': 8,
-    'data': [0x01, 0xFF, 0x12, 0x00, 0xA0, 0x00, 0x00, 0x00]
-}
-
 def decode_signal(signal, can_frame):
     start_bit = signal['StartBit']
     length = signal['Length']
@@ -43,12 +35,10 @@ def decode_signal(signal, can_frame):
     # Áp dụng scale, offset
     return value * factor + offset
 
-df_signals = dfp.loc[dfp['ID'] == hex(CAN_Frame['arbitration_id'])]
-print(df_signals.count())
-print(f"Decoded signals for CAN Frame ID {hex(CAN_Frame['arbitration_id'])}:")
-
-for _, signal in df_signals.iterrows():
-    #print(f"Signal: {signal['Endianess']} {signal['Signal']} (Start Bit: {signal['StartBit']}, Length: {signal['Length']})")
-    value = decode_signal(signal, CAN_Frame['data'])
-    print(f" - {signal['Signal']}: {value}")
+def gen_signal(CAN_Frame):
+    df_signals = dfp.loc[dfp['ID'] == hex(CAN_Frame['arbitration_id'])]
+    print(f"Decoded signals for CAN Frame ID {hex(CAN_Frame['arbitration_id'])}:")
+    for _, signal in df_signals.iterrows():
+        value = decode_signal(signal, CAN_Frame['data'])
+        print(f" - {signal['Signal']}: {value}")
 
