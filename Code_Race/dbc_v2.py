@@ -42,8 +42,7 @@ for msg in db.messages:
             "Max": sig.maximum,
             "Unit": sig.unit,
             "Enum (ValueTable)": enum_table,
-            "Initial Value": sig.initial,
-            "Comment": sig.comment
+            "Initial Value": sig.initial
         })
 
 df = pd.DataFrame(rows)
