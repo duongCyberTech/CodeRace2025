@@ -5,11 +5,28 @@ A simple Python socket-based project demonstrating how to process CAN signals in
 ## 📁 Project Structure
 
 ```
-.
-├── send_v2.py         # Socket server
-├── receive_v2.py         # Socket client
-├── requirements.txt  # Required packages (if any)
-└── README.md         # This file
+├── .gitignore
+├── Code_Race
+    ├── can-docker
+    │   └── Dockerfile
+    ├── dbc_processing
+    │   ├── dbc_v2.py
+    │   └── error_detection.py
+    ├── decode_signals.py
+    ├── output_binary.png
+    ├── p_data
+    │   ├── description.csv
+    │   ├── error_signals_summary.csv
+    │   ├── msg.txt
+    │   ├── signals_summary.csv
+    │   └── signals_summary_v2.csv
+    ├── raw_data
+    │   └── BOSCH_CAN Data.dbc
+    ├── receive_testing.py
+    ├── receive_v2.py
+    ├── requirements.txt
+    └── send_v2.py
+└── README.md
 ```
 
 ---
